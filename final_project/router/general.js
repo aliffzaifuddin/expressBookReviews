@@ -48,40 +48,26 @@ public_users.get('/isbn/:isbn',  function (req, res) {
 
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-    const author = req.params.author;
-    const arraybooks = Object.keys(books);
-    const getBooksByAuthor = new Promise ((resolve,reject) => {
-        setTimeout(() => {
-            arraybooks.forEach((key)=>{
-                if(books[key].author === author){
-                    resolve(res.send(books[key]))
-                }
-                else{
-                    reject(res.status(404).json({message:"Can't find author with the book"}));
-                }
-            })
-        }, 2000)
-    })
-    getBooksByAuthor;
+  const author = req.params.author
+  let newBookArray = []
+  for(let isbn in books) {
+      if(books[isbn].author === author){
+          newBookArray.push(books[isbn])
+      }
+  }
+  res.send(newBookArray)
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-    const title = req.params.title;
-    const arraybooks = Object.keys(books);
-    const getBooksByTitle = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            arraybooks.forEach(key => {
-                if(books[key].title === title){
-                    resolve (res.send(books[key]))
-                }
-                else{
-                    reject(res.status(300).json({message: "Can't find book with that title"}))
-                }
-            })
-        }, 2000)
-    })
-    getBooksByTitle;
+  const title = req.params.title
+  let newBookArray = []
+  for (let isbn in books) {
+      if (books[isbn].title === title) {
+          newBookArray.push(books[isbn])
+      }
+  }
+  res.send(newBookArray)
 });
 
 //  Get book review
