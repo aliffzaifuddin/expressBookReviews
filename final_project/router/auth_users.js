@@ -58,7 +58,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (reviews) {
         book["reviews"] = reviews
     }
-    books[ISBN] = book
     res.send(`Review with ISBN ${ISBN} has been updated`)
   }
   else {
@@ -74,7 +73,6 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     if (reviews) {
         delete books[reviews]
     }
-    books[ISBN] = book
     res.send(`Review with ISBN ${ISBN} has been deleted`)
   }
   else {

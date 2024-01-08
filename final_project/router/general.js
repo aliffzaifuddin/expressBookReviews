@@ -22,41 +22,66 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',  function (req, res) {
-  res.send(JSON.stringify(books, null,4))
+  bookList = JSON.stringify(books,null,4)
+  const getBooks = new Promise((resolve,reject) => {
+    setTimeout(() => {
+        resolve(res.send(bookList))
+    }, 2000)
+  })
+  getBooks;
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',  function (req, res) {
   const ISBN = req.params.isbn
-  res.send(books[ISBN])
+  const getBooksByIsbn = new Promise((resolve,reject) => {
+    setTimeout(() => {
+        if(books[ISBN]) {
+            resolve(res.send(books[ISBN]))
+        }
+        else {
+            reject(res.status(404).json({message:"book not found"}));
+        }
+    }, 2000)
+  })
 });
 
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
     const author = req.params.author;
     const arraybooks = Object.keys(books);
-    arraybooks.forEach((key, index)=>{
-        if(books[key].author === author){
-            res.send(books[key],null,10);
-        }
-        else{
-            return res.status(300).json({message: "Can't find author with such a name"});
-        }
+    const getBooksByAuthor = new Promise ((resolve,reject) => {
+        setTimeout(() => {
+            arraybooks.forEach((key)=>{
+                if(books[key].author === author){
+                    resolve(res.send(books[key]))
+                }
+                else{
+                    reject(res.status(404).json({message:"Can't find author with the book"}));
+                }
+            })
+        }, 2000)
     })
+    getBooksByAuthor;
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
     const arraybooks = Object.keys(books);
-    arraybooks.forEach((key, index)=>{
-        if(books[key].title === title){
-            res.send(books[key],null,10);
-        }
-        else{
-            return res.status(300).json({message: "Can't find title with such a name"});
-        }
+    const getBooksByTitle = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            arraybooks.forEach(key => {
+                if(books[key].title === title){
+                    resolve (res.send(books[key]))
+                }
+                else{
+                    reject(res.status(300).json({message: "Can't find book with that title"}))
+                }
+            })
+        }, 2000)
     })
+    getBooksByTitle;
 });
 
 //  Get book review
